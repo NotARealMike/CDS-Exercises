@@ -1,0 +1,255 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CL provided template
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[12pt,a4paper,oneside,openright]{report}
+
+% makes subsubsections appear in the toc
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+% turns references into hyperlinks
+\usepackage[pdfborder={0 0 0}]{hyperref}
+\newcommand{\URL}[1]{\href{https://#1}{\textcolor{cyan}{\texttt{#1}}}}
+
+\usepackage{tablefootnote}
+
+% adjusts page layout
+\usepackage[margin=25mm]{geometry}
+
+% allows inclusion of PDF, PNG and JPG images
+\usepackage{graphicx}
+\graphicspath{ {figs/} }
+
+\usepackage{verbatim}
+
+% try to avoid widows and orphans
+\raggedbottom
+\sloppy
+\clubpenalty1000%
+\widowpenalty1000%
+
+% adjust line spacing to make more readable
+\renewcommand{\baselinestretch}{1.1}
+
+% add colour to TODOs
+\usepackage{xcolor}
+
+\renewcommand{\chaptername}{Supervision}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Maths
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{amsmath}        % American Mathematical Society
+\usepackage{amssymb}        % Maths symbols
+\usepackage{amsthm}         % Theorems
+\usepackage{mathpartir}    % Proofs and inference rules
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Floats
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{float}
+\usepackage[labelfont=bf,margin=10pt]{caption}
+\usepackage{subcaption}
+\newcommand{\mycaption}[2]{\caption[#1]{#1 #2}}
+
+\floatstyle{plain}
+\restylefloat{figure}
+\restylefloat{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+% Figures
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+\newcommand{\graphWidth}{15cm}
+
+% Shamelessly stolen to draw VBox diagrams
+\usepackage{threads}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Tables
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{array}
+% control width and vertically align text in table cells
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Listings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{fancyvrb}
+
+\floatstyle{boxed}
+%\floatstyle{ruled}
+\newfloat{Listing}{tbp}{lol}[chapter]
+
+\DefineVerbatimEnvironment{JavaCode}{Verbatim}
+{fontfamily=courier,baselinestretch=1,gobble=4}
+
+\DefineVerbatimEnvironment{GoCode}{Verbatim}
+{fontfamily=courier,baselinestretch=1,gobble=4}
+
+\usepackage{listings}
+\usepackage{color}
+\usepackage{mathtools}
+
+\definecolor{dkgreen}{rgb}{0,0.4,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{
+  language=Java,
+  aboveskip=0mm,
+  belowskip=0mm,
+  showstringspaces=false,
+  %columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=left,
+  keywordstyle=\bfseries,
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=4
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Semantic and convenience macros
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\todo}[1]{\textcolor{red}{TODO: #1}}
+\newcommand{\note}[1]{\textcolor{blue}{NOTE: #1}}
+
+\newcommand{\javaLiteral}[1]{\texttt{#1}}
+\newcommand{\javaCode}[1]{\texttt{#1}}
+\newcommand{\javaClass}[1]{\texttt{#1}}
+\newcommand{\javaSlot}[1]{\texttt{#1}}
+\newcommand{\javaVariable}[1]{\texttt{#1}}
+\newcommand{\javaKeyword}[1]{\texttt{#1}}
+\newcommand{\javaMethod}[1]{\texttt{#1}}
+\newcommand{\javaException}[1]{\texttt{#1}}
+\newcommand{\javaAnnotation}[1]{\texttt{#1}}
+
+\newcommand{\keyTerm}[1]{\textbf{#1}}
+
+\newcommand{\codeemph}[1]{\textbf{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Info about document
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\course}{Concurrent and Distributed Systems}
+
+\title{Concurrent and Distributed Systems\\ Exercise Sheet}
+\date{\today}
+\author{Mike Cachopo}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Start of document
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Cover page
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\pagestyle{empty}
+
+\maketitle
+
+\newpage
+
+\pagestyle{plain} \pagenumbering{roman}
+
+\section*{Questions}
+
+Each supervision is split into three sections:
+
+\begin{description}
+\item[Bookwork] \hfill\\
+  This section focuses on the key concepts you need to understand and
+  remember to do well in the course. It's not worth including these
+  definitions in your answers, but they should be on the tip of your
+  tongue if you're asked about them in a supervision! If there is
+  anything here you don't understand please send me an email, so that
+  we can address it in advance and you can take the most out of the
+  supervision.
+\item[Exercises] \hfill\\
+  This is where I expect you to spend most of your time and effort. If
+  you get stuck on a question, move onto the others and come back to
+  it later. If you're still stuck, either send me an email or leave a
+  note to discuss during the supervision.
+\item[Extensions] \hfill\\
+  If you have some spare time or interest after finishing the core
+  exercises, have a look at the extensions. They cover topics that are
+  just beyond the scope of the course, so attempting these questions
+  is optional. However, spending some time here will give you a deeper
+  understanding of the course, which will be helpful later.
+\end{description}
+
+
+\section*{Submitting work}
+
+Submit your answers to the questions as a single PDF file \todo{email
+  address?}. I am rarely in Cambridge so I can't accept paper
+submissions. I strongly suggest using LaTeX to typeset your answers
+--- you'll need it next year for your dissertation, and the sooner you
+start practicing the better.
+
+The sooner you submit work the more time I have to mark it and give
+detailed feedback. Aim to submit your work 48 hours before the
+corresponding supervision. If for some reason you can't do that,
+please let me know not to wait for it. I am happy to mark work
+submitted after a supervision in exceptional circumstances, but keep
+in mind that you'll be missing out on most of the benefit of the
+supervision.
+
+\section*{General advice}
+
+In Cambridge, it is easy to feel overwhelmed by all the work to be
+done, and like your supervisors expect your life to revolve around
+work. They don't, and it shouldn't. Take care of your physical and
+mental health first, and then your work.
+
+If you're struggling, let your relevant supervisors, DoS and Tutor know
+so that they can help. \todo{Maybe include a link to a student
+  helpline?}
+
+Lastly, enjoy learning through these questions!
+
+\newpage
+
+\tableofcontents
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% #Content
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\chapter{Locks and stuff}
+\pagestyle{headings} \pagenumbering{arabic}
+
+\chapter{Hopefully a bit of STMS}
+
+\chapter{Clocks I think?}
+
+\chapter{Some more distributed stuff}
+
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
