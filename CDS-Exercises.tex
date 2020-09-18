@@ -9,7 +9,7 @@
 \setcounter{tocdepth}{3}
 
 % turns references into hyperlinks
-\usepackage[pdfborder={0 0 0}]{hyperref}
+\usepackage[pdfborder={0 0 0}, colorlinks=true, urlcolor=cyan]{hyperref}
 \newcommand{\URL}[1]{\href{https://#1}{\textcolor{cyan}{\texttt{#1}}}}
 
 \usepackage{tablefootnote}
@@ -22,6 +22,9 @@
 \graphicspath{ {figs/} }
 
 \usepackage{verbatim}
+
+% itemize with multiple columns
+\usepackage{multicol}
 
 % try to avoid widows and orphans
 \raggedbottom
@@ -121,6 +124,11 @@
   tabsize=4
 }
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Question formatting
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\question}[2]{\paragraph{#1} #2}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Semantic and convenience macros
@@ -158,7 +166,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Cover page
@@ -198,7 +205,6 @@ Each supervision is split into three sections:
   understanding of the course, which will be helpful later.
 \end{description}
 
-
 \section*{Submitting work}
 
 Submit your answers to the questions as a single PDF file \todo{email
@@ -222,8 +228,8 @@ done, and like your supervisors expect your life to revolve around
 work. They don't, and it shouldn't. Take care of your physical and
 mental health first, and then your work.
 
-If you're struggling, let your relevant supervisors, DoS and Tutor know
-so that they can help. \todo{Maybe include a link to a student
+If you're struggling, let your relevant supervisors, DoS and Tutor
+know so that they can help. \todo{Maybe include a link to a student
   helpline?}
 
 Lastly, enjoy learning through these questions!
@@ -237,15 +243,287 @@ Lastly, enjoy learning through these questions!
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\chapter{Locks and stuff}
+\chapter{Concurrency primitives}
 \pagestyle{headings} \pagenumbering{arabic}
 
-\chapter{Hopefully a bit of STMS}
+\section{Bookwork}
+
+\question{The free lunch is over}{Before trying to solve all the
+  problems of concurrent programming, it's important to understand why
+  concurrent programming is desirable in the first place. Read
+  \cite{FreeLunchIsOver}. We will discuss in the supervision.}
+
+\question{Lecture 1 concepts}{Define and explain the following:
+  \begin{itemize}
+  \item Multicore processors;
+  \item Processes, threads and the differences between them (you may
+    want to mention the memory stacks and heap), as well as how
+    context switches work;
+  \item Concurrency, and the difference between time sharing a single
+    core and true parallelism;
+  \item User-level, kernel-level and hybrid thread scheduling, the
+    advantages and disadvantages of each as well as your favourite
+    language that uses each of them;
+  \item ``Mostly correct'' code and why it is a problem;
+  \item Critical sections and mutual exclusion;
+  \item Race conditions and atomic memory operations.
+  \end{itemize}
+}
+
+\question{Lecture 2 concepts}{Answer the following questions:
+  \begin{itemize}
+  \item In a multicore system, would it be possible to achieve mutual
+    exclusion on critical sections by locking (having exclusive access
+    to) the memory bus when entering a critical section? You may find
+    it useful to refer to the slide titled ``Computer Architecture
+    Reference Models''.
+  \item What can cause a running process/thread to block?
+  \item What are the problems with disabling interrupts to provide
+    atomic execution of a critical section? Don't forget the ones that
+    do not involve other cores or DMA.
+  \item Why do we need special ISA instructions to make an atomic
+    read-and-set? Are these instructions strictly necessary to write
+    correct concurrent programs? You may want to mention Lamport's
+    bakery algorithm in your answer, but don't spend much time trying
+    to understand it.
+  \item How would you explain CAS to someone who never heard of it?
+  \item How would you explain LL/SC to someone who never heard of it?
+  \item What is the difference between deadlock and livelock?
+  \item Be prepared to act out the dining philosophers' problem in the
+    supervision and explain where the problem lies. Can you think of a
+    simple solution?
+  \end{itemize}
+}
+
+\question{Lecture 3 concepts}{Answer the following questions:
+  \begin{itemize}
+  \item Why is sleeping preferable to spinning?
+  \item Describe the implementation of a semaphore and its
+    operations. Refer to
+    \cite[Chapters~10.4--10.6]{bacon2003operating} for more in-depth
+    information than the lecture slides.
+  \item What is an IPI? For this course you don't need to know much
+    about low-level implementation details, but you should be
+    comfortable explaining what they are and how they can be used at a
+    high level.
+  \item How can a semaphore be used to provide mutual exclusion,
+    condition synchronisation and resource allocation? What is the
+    starting value of the semaphore and what are the logical meanings
+    of the operations in each case?
+  \item Explain the producer-consumer problem. What are some
+    real-world applications of this problem? How can you solve it with
+    semaphores? How would you solve it with locks? You may wish to
+    refer to \cite[Chapter~11.3]{bacon2003operating}.
+  \end{itemize}
+}
+
+\question{Lecture 4 concepts}{Answer the following questions:
+  \begin{itemize}
+  \item It is safe for multiple threads to concurrently read a shared
+    resource, but writes must have exclusive access. Why?  What can go
+    wrong if a read and a write happen concurrently?  What can happen
+    if two writes happen concurrently?
+  \item Be ready to sketch out and discuss several RW lock
+    implementations using semaphores in the supervision, focusing on
+    their starvation and fairness properties. This should include the
+    implementation in \cite[Chapter~11.5]{bacon2003operating}.
+  \item What are the advantages of Conditional Critical Regions, and
+    why do we care about them? Why is CCR not a common synchronisation
+    mechanism?
+  \item Where are monitors used in Java, and how do they work? This is
+    covered in the \emph{Further Java} companion course. If you
+    haven't gotten there yet have a look at the Java specification.
+  \item Why are condition variables a useful complement to monitors?
+    What are the similarities and differences with semaphores? How are
+    they used in Java?
+  \item What are the pros and cons of signal-and-wait and
+    signal-and-continue semantics? Which is used in Java? What
+    implications does this have on how we \texttt{wait} in Java?
+  \item How would you implement a RW lock using a monitor? (Hint:
+    adapt the implementation using semaphores in
+    \cite[Chapter~11.5]{bacon2003operating}.)
+  \item What concurrency primitives do C++ phtreads support?
+  \end{itemize}
+}
+
+\todo{processes, threads, interrupts, locks, semaphores, condition
+  synchronisation, lock-free/wait-free, obstruction-free, deadlock,
+  livelock, priority inversion, transactions, serialisability and
+  linearisability}
+
+\section{Exercises}
+
+\section{Extensions}
+
+
+\chapter{Transactions}
+
+\section{Bookwork}
+
+\question{Lecture 5 concepts}{Define the following terms:
+  \begin{itemize}
+  \item This is repeated from last supervision, but it's worth making
+    sure you remember: What is the difference between deadlock and
+    livelock?
+  \item What are the requirements for the possibility of deadlock? How
+    is each of them shown in the ``Resource allocation graph'' in the
+    slides? How would you remove each of the requirements?
+  \item If you were writing a concurrent application, how would you
+    deal with deadlock? This question is deliberately very open-ended,
+    we will discuss in supervision.
+  \item One way to prevent hold-and-wait is to request all resources
+    simultaneously. Why can this be a hard thing to do?
+  \item Again, this is a repeat from last supervision, but now you
+    should make sure you can do it: What is a simple solution to the
+    dining philosophers problem?
+  \item \todo{Banker's algorithm?}
+  \item What are some pros and cons of the thread scheduling policies
+    on the slides?
+  \item Sketch out an example scenario of priority inversion without
+    using a reference. How would priority inheritance help here?
+  \end{itemize}
+}
+
+\question{Lecture 6 concepts}{Define the following terms:
+  \begin{itemize}
+  \item Why are higher-level concurrent programming models useful?
+    What higher-level models are there, and what are some examples
+    (languages that use them, libraries, applications, etc) of each?
+  \item Explain the programming model of active objects. What is it
+    similar to? How does it provide mutual exclusion and condition
+    synchronisation?
+  \item Explain message passing. How does it differ from active
+    objects? What is the difference between synchronous and
+    asynchronous message passing?
+  \item Why are ``composite operations'' important? What are some
+    examples of applications that may use them?
+  \item Explain the problems shown in the composite operation example
+    in the slides.
+  \item What are the ACID properties?
+  \item What is serialisability? How is it different from a serial
+    execution?
+  \end{itemize}
+}
+
+\question{Lecture 7 concepts}{Define the following terms:
+  \begin{itemize}
+  \item What kinds of operation conflicts are there? What are the
+    problems caused by each?
+  \item What is the difference between strict isolation and non-strict
+    isolation?
+  \item What are cascading aborts, and why are they a problem?
+  \item How does two-phase locking work? What algorithmic difference
+    is there between a version of 2PL that offers non-strict isolation
+    and one that offers strict isolation? Can you think of a way to
+    avoid the need to know the locks required in advance?
+  \item Why might a transaction abort?
+  \item What approaches are there to rollback a transaction?
+  \item How does timestamp ordering work? What timestamp is given to a
+    transaction as it begins? At commit time, what needs to be
+    checked? What are its pros and cons compared with 2PL?
+  \item What is optimistic concurrency control? You may want to read
+    \cite[Chapter~20.6]{bacon2003operating} for this one, because the
+    slides are somewhat misleading. What are its advantages and
+    disadvantages?
+  \item Explain the OCC algorithm used in the slides. What's wrong
+    with the ``OCC example (2)'' slide? As in, how is it being overly
+    conservative? (Hint: can a write-only transaction conflict with
+    any committed transaction?)
+  \item In an application with a high degree of contention --- many
+    concurrent transactions conflict, forcing each other to abort ---
+    what is the best synchronisation mechanism?
+  \end{itemize}
+}
+
+\question{Lecture 8 concepts}{Define the following terms:
+  \begin{itemize}
+  \item What is a crash? What can cause it? What assumptions does the
+    fail-stop model make, and how can they be broken?
+  \item Why does ``writing all objects to disk on commit'' not work?
+    How is write-ahead logging different?
+  \item What is the bare minimum information that entries in a
+    write-ahead log must hold? What does that information let us do
+    when a crash occurs?
+  \item Why is lazy write back desirable? What problems does it
+    introduce, and how are they solved with a well placed flush? Does
+    batching change the guarantees provided by the log?
+  \item What benefits do checkpoints give us? In supervision, draw a
+    diagram and explain the algorithm for restarting from a
+    checkpoint.
+  \item In 60 seconds or less, sell me a transactional system. As in,
+    convince me that transactions are a ``good'' model to use to write
+    a concurrent application (you have to tell me what ``good'' means
+    too!)
+  \item What are the pros and cons of lock-free programming? What is
+    linearisability? If I asked you to implement a lock-free data
+    structure, such as a linked list, what would you reply?
+  \item What is transactional memory? Why is it ``promising''? Why is
+    it not widely used today?
+  \end{itemize}
+}
+
+
+\section{Exercises}
+
+\section{Extensions}
+
+\question{Message passing}{If you want to know more about message
+  passing models read up on Hoare's Communicating Sequential Processes
+  (CSP) or Milner's Communicating Sequential Systems (CCS). If you
+  would like a reasonably clean introduction to how CSP can be used in
+  a programming language, have a look at
+  \href{https://tour.golang.org}{A Tour of Go}, in particular the
+  section on channels.}
+
+\question{BASE}{What are the BASE properties? Why would they be more
+  desirable than ACID?}
+
+\question{Lock-free programming}{The \emph{Multicore Semantics and
+    Programming} Part II Unit of Assessment has a two hour lecture on
+  lock-free programming. If you want to know more, it's a good place
+  to start.}
+
+\question{Transactional memory}{For a relatively short intro to
+  Software Transactional Memory, check out
+  \cite[Chapter~18]{ArtMultiprocessorProgramming}. For a deeper
+  understanding of why STM is a very powerful tool, read \cite{CMT}.}
+
+\todo{lock-free, wait-free, obstruction-free, slide 10 AND-OR wait-for
+  graphs}
 
 \chapter{Clocks I think?}
 
+\section{Bookwork}
+
+\question{Lecture 9 concepts}{Define the following terms:
+  \begin{itemize}
+  \item Stub
+  \end{itemize}
+}
+
+\section{Exercises}
+
+\section{Extensions}
+
 \chapter{Some more distributed stuff}
 
+\section{Bookwork}
+
+\question{Lecture 13 concepts}{Define the following terms:
+  \begin{multicols}{2}
+    \begin{itemize}
+    \item Stub
+    \end{itemize}
+  \end{multicols}
+}
+
+\section{Exercises}
+
+\section{Extensions}
+
+\bibliographystyle{apalike}
+
+\bibliography{biblio}
 
 \end{document}
 
