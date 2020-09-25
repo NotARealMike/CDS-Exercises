@@ -491,19 +491,134 @@ Lastly, enjoy learning through these questions!
 \todo{lock-free, wait-free, obstruction-free, slide 10 AND-OR wait-for
   graphs}
 
-\chapter{Clocks I think?}
+\chapter{Distributed systems and ordering}
 
 \section{Bookwork}
 
-\question{Lecture 9 concepts}{Define the following terms:
+\question{Lecture 9 concepts}{
   \begin{itemize}
-  \item Stub
+  \item What is a distributed system? Name a few and say what they
+    (try to) accomplish.
+  \item Why is a distributed system inherently a concurrent system?
+    What additional difficulties are there? Why would we want one in
+    the first place, if it is even more complex than a concurrent
+    system?
+  \item What protocols do you implicitly use when accessing this
+    exercise sheet? You don't have to be exhaustive, but I want to see
+    you thinking about this. What important conclusion can you draw
+    from this exercise?
+  \item What is transparency? Why is it useful? How much do we
+    actually want?
+  \item How would you describe a client-server application to your
+    Engling friend?
+  \item What are synchronous and asynchronous requests? What is an
+    appropriate use of each?
+  \item What are examples of errors, faults and failures?
+  \item What are retry; exactly-once; all-or-nothing; at-most-once and
+    at-least-once semantics?
+  \item What is RPC? Why is it a more useful abstraction than
+    request/response? What does ``useful'' even mean here?
+  \item What is marshalling? What is an IDL? How is all this done in
+    Java? (Hint: this is covered in the Further Java course.)
   \end{itemize}
 }
+
+\question{Lecture 10 concepts}{
+  \begin{itemize}
+  \item Make sure you brush up on the file system API in Unix. What
+    are the five procedures to handle a file exposed to a programmer?
+  \item How would you describe NFS to someone who just finished Part
+    IA of the Computer Science Tripos?
+  \item Why is a virtual file system a useful layer of abstraction to
+    use in NFS?
+  \item What does ``stateless'' mean in the context of NFS? Why would
+    a stateful design make fault recovery more difficult?
+  \item In 60 seconds or less, what are the implications of
+    statelessness on the interface between the NFS client and server?
+  \item The \texttt{readdirplus} procedure in NFSv3 is a good use of
+    batching. Why is it useful? Can you think of a situation where
+    batching would be undesirable?
+  \item What is inconsistency in the context of NFS? What feature of
+    NFSv3 causes it? How can programmers work around it? At what
+    granularity does this work?
+  \end{itemize}
+}
+
+\question{Lecture 11 concepts}{
+  \begin{itemize}
+  \item Object-Oriented Middleware is no longer part of the course,
+    but it is important to have a high-level understanding of it if
+    you ever write a distributed application in an OO language. How is
+    OOM different from RPC?
+  \item REST is also barely covered, but very widely used in industry,
+    so you should know what it is at a high-level. In 30 seconds or
+    less, explain to me what a RESTful service is.
+  \item Why do we care so much about knowing the time? How are
+    physical and logical time different?
+  \item What is UTC, and how is it calculated? How is it different
+    from Unix time?
+  \item What clocks does a typical laptop have? How is each clock
+    used?
+  \item What is the clock synchronisation problem? Why is it a
+    problem? What solutions are there?
+  \item On a whiteboard, draw and explain Cristian's algorithm. What
+    assumptions does it make? Are they fair assumptions to make?
+  \item What is the goal of the Berkeley algorithm? How does it
+    achieve that goal?
+  \item On a whiteboard, draw and explain the communication between a
+    client and a server in the NTP algorithm. How is this an
+    improvement on Cristian's algorithm? How else is NTP more complex
+    than Cristian's algorithm?
+  \item Why can physical time not be used in a distributed system?
+  \item How would you explain a happens-before relation to someone who
+    just finished Part IA of the Computer Science Tripos?
+  \end{itemize}
+}
+
+\question{Lecture 12 concepts}{
+  \begin{itemize}
+  \item What ``rules'' are used to define the happens-before
+    relationship shown on the slides?
+  \item By drawing a diagram on a whiteboard, explain how Lamport
+    clocks work. Given the timestamps of two events \textbf{L(a)} and
+    \textbf{L(b)}, what can we say about the order of \textbf{a} and
+    \textbf{b}?
+  \item By changing the diagram above, explain how vector clocks
+    work. How can vector clocks be used for ordering? Can you think of
+    a situation in which $\mathbf{V_i = V_j}$?
+  \item What are the tradeoffs between Lamport clocks and vector
+    clocks? How does each of them scale with the number of processes
+    and the amount of communication?
+  \item What is a consistent cut? (As a point of discussion, is there
+    an error in the definition in the slides?)
+  \item How would you explain process groups to your supervision
+    partner(s)? In what ways can process groups vary?
+  \item What is the difference between ``receiving'' and
+    ``delivering'' a message? Why is this distinction useful?
+  \item What are the guarantees provided by FIFO, causal and total
+    ordering? How would you implement each? (Is the ``hold-back
+    queue'' actually a queue?)
+  \end{itemize}
+}
+
+\question{A note on logical clocks}{Logical clocks are used to
+  attribute timestamps to events so that some ordering can be
+  determined. When using clocks, it's important to keep in mind what
+  events are being ``numbered''. When clocks are introduced in the
+  lecture slides, the clocks are incremented when a message is sent,
+  received, or when an internal event occurs. In other contexts, such
+  as the implementation of causal ordering of multicast messages in a
+  process group (and the chat application in the Further Java course),
+  the events being tracked are only message ``send''s. When
+  implementing an application using a logical clock, make sure you
+  know what you are counting, otherwise you will have bugs that are
+  very difficult to pin down!}
 
 \section{Exercises}
 
 \section{Extensions}
+
+\todo{Lamport's relativity argument, gRPC}
 
 \chapter{Some more distributed stuff}
 
