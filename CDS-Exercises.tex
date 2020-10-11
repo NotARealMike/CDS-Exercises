@@ -651,12 +651,105 @@ Lastly, enjoy learning through these questions!
 
 \section{Bookwork}
 
-\question{Lecture 13 concepts}{Define the following terms:
-  \begin{multicols}{2}
+\question{Lecture 13 concepts}{
+  \begin{itemize}
+  \item What is a central lock server? What problem does it solve?
+    What are its pros and cons? Can you think of a way of implementing
+    a time-out that is different from the one in the slides? How does
+    it compare?
+  \item How does token passing work in a ring? What are its pros and
+    cons for implementing distributed locking? How many tokens are
+    there? (This last part is ambiguous by design. How could you use
+    more than one token?)
+  \item How does total-order multicast work? Why do we need a total
+    order on all messages? How can you achieve this with a Lamport
+    timestamp? What are the consequences of such an approach?
+  \item How would you describe the difficulties of distributed
+    transactions to someone that just finished the ``concurrency''
+    part of this course?
+  \item What problem does two-phase commit solve? Why does the
+    coordinator default to abort when one of the servers times out?
+  \item What is replication? What are passive and active replication?
+    What properties does each give a distributed application? What are
+    cold-, warm- and hot-standby?
+  \item What is RAID? What properties do RAID 0, 1 and 5 give us?
+  \item In 60 seconds, explain to your supervisions partner(s) the
+    concepts of strong and weak consistency, and tell me something I
+    don't know about consistency in a distributed system.
+  \end{itemize}
+}
+
+\question{Lecture 14 concepts}{
+  \begin{itemize}
+  \item What is a ``leader'' in a distributed system? Why is a leader
+    useful? How would you describe a generic leader election algorithm
+    to someone who just finished Part IA of the Computer Science
+    Tripos?
+  \item Why is ``highest ID'' a commonly used heuristic in leader
+    election? How is the process with the highest ID found in a
+    ring-based election and in the bully algorithm? (Be ready to draw
+    a diagram in the supervision.)
+  \item What is a network partition? Can it lead to more complicated
+    problems than single-machine failures? Why?
+  \item \todo{UPDATE ME!!!}
+  \end{itemize}
+}
+
+\question{Lecture 15 concepts}{
+  \begin{itemize}
+  \item What are the pros and cons of the first algorithm to achieve
+    consistency shown in the slides? It is a particular instance of
+    which algorithm?
+  \item What is a ``quorum''? How can a quorum system be used to
+    implement strong consistency? Why do we need the constraint that
+    the write quorum must be larger then half the number of replicas?
+  \item How can we change a quorum system to provide ``weak
+    consistency''? What properties are provided by strong consistency
+    but not in this case?
+  \item What is eventual consistency? How does it compare with strong
+    and weak consistency? How can it be implemented? What are write
+    conflicts?
+  \item What are session guarantees, and what properties can they be
+    used to provide? What are their drawbacks, and how can we mitigate
+    them?
+  \item What is the CAP theorem? How big are its implications to
+    real-world distributed systems? (You may want to skim the Spanner
+    article in the extensions section.)
+  \item What is MapReduce? Why is it such a successful framework?
+    (This is deliberately vague, let's discuss in supervision.)
+  \item Pick one of the applications case studies in the slides and
+    explain it to me. You can assume I know nothing about the
+    application in particular, but I do know a fair amount about
+    distributed systems. Exercise your ability to talk about computer
+    systems, and feel free to include some information not in the
+    course. You may want to cover, for example:
     \begin{itemize}
-    \item Stub
+    \item What problem is the application trying to solve?
+    \item What components does it have?
+    \item What key algorithms --- covered in this course or otherwise
+      --- are used?
+    \item What interesting properties does the application have?
     \end{itemize}
-  \end{multicols}
+  \end{itemize}
+}
+
+\question{Lecture 16 concepts}{
+  \begin{itemize}
+  \item What are administrative domains? Why do they make it necessary
+    to implement distributed security protocols? What is a trusted
+    computing base?
+  \item What are identification, authentication and authorisation?
+  \item What is an access control matrix? Why don't we use one
+    directly? What are ACLs and capabilities? What are the pros and
+    cons of each?
+  \item What is role-based access control? Describe an example
+    application that uses RBAC.
+  \item How would you describe single-system sign on to someone who
+    just finished Part IA of the Computer Science Tripos?
+  \item Pick one of AFS or Coda and explain it to me in 60 seconds or
+    less. Use the same rules as for the case study question from
+    Lecture 15.
+  \end{itemize}
 }
 
 \section{Exercises}
@@ -674,6 +767,8 @@ Lastly, enjoy learning through these questions!
     Paper 8 Question 1}}
 
 \section{Extensions}
+
+\todo{Consensus (Paxos and/or Raft), Spanner and the CAP theorem.}
 
 \bibliographystyle{apalike}
 
