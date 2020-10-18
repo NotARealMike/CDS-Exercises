@@ -185,7 +185,10 @@ Submit your answers to the questions as a single PDF file by email. I
 am rarely in Cambridge so I can't accept paper submissions. I strongly
 suggest using LaTeX to typeset your answers --- you'll need it next
 year for your dissertation, and the sooner you start practicing the
-better.
+better. I recommend using the Ti\textit{k}Z package to make diagrams,
+but hand-drawn and scanned is fine if you are in a rush --- you should
+prioritise your learning over making your supervision work look
+pretty.
 
 The sooner you submit work the more time I have to mark it and give
 you detailed feedback. Aim to submit your work 48 hours before the
@@ -293,7 +296,7 @@ Lastly, enjoy learning through these questions!
 
 \newpage
 
-\tableofcontents
+% \tableofcontents
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % #Content
@@ -307,7 +310,7 @@ Lastly, enjoy learning through these questions!
 
 \question{The free lunch is over}{Before trying to solve all the
   problems of concurrent programming, it's important to understand why
-  concurrent programming is desirable in the first place. Read
+  concurrency is desirable in the first place. Read
   \cite{FreeLunchIsOver}. We will discuss in the supervision.}
 
 \question{Lecture 1 concepts}{Define and explain the following:
@@ -342,8 +345,10 @@ Lastly, enjoy learning through these questions!
     read-and-set? Are these instructions strictly necessary to write
     correct concurrent programs? You may want to mention Lamport's
     bakery algorithm in your answer.
-  \item How would you explain CAS to someone who never heard of it?
-  \item How would you explain LL/SC to someone who never heard of it?
+  \item How would you explain CAS to someone who just finished Part IA
+    of the Computer Science Tripos?
+  \item How would you explain LL/SC to someone who just finished Part
+    IA of the Computer Science Tripos?
   \item What is the difference between deadlock and livelock?
   \item Be prepared to act out the dining philosophers' problem in the
     supervision and explain where the problem lies. Can you think of a
@@ -402,10 +407,6 @@ Lastly, enjoy learning through these questions!
   \end{itemize}
 }
 
-\todo{processes, threads, interrupts, locks, semaphores, condition
-  synchronisation, lock-free/wait-free, obstruction-free, deadlock,
-  livelock, priority inversion, transactions, serialisability and
-  linearisability}
 
 \section{Exercises}
 
@@ -419,6 +420,29 @@ Lastly, enjoy learning through these questions!
 
 \section{Extensions}
 
+\question{Real-life synchronisation}{Explain to me the solution to
+  \cite[Chapter~1,~Exercise~4]{ArtMultiprocessorProgramming}.}
+
+\question{Java concurrency}{Ask me any question about concurrent
+  programming in Java that I cannot answer. (You will most likely
+  succeed if you try hard enough, but I'm curious to see what you'll
+  come up with.) You may find it useful to refer to the
+  \href{https://docs.oracle.com/javase/specs/jls/se15/html/jls-17.html}{Java
+    specification}.}
+
+\question{Double-checked locking}{Read \cite{DCL}. What is your
+  favourite solution to the double-checked locking problem with the
+  singleton pattern in Java?}
+
+\question{Progress guarantees}{What does it mean for an application to
+  be:
+  \begin{itemize}
+  \item lock-free;
+  \item wait-free;
+  \item obstruction-free?
+  \end{itemize}
+  What does it mean for a particular operation within an application
+  to have these properties?  }
 
 \chapter{Transactions}
 
@@ -560,8 +584,6 @@ Lastly, enjoy learning through these questions!
   \cite[Chapter~18]{ArtMultiprocessorProgramming}. For a deeper
   understanding of why STM is a very powerful tool, read \cite{CMT}.}
 
-\todo{lock-free, wait-free, obstruction-free, slide 10 AND-OR wait-for
-  graphs}
 
 \chapter{Distributed systems and ordering}
 
@@ -703,7 +725,7 @@ Lastly, enjoy learning through these questions!
 
 \todo{Lamport's relativity argument, gRPC}
 
-\chapter{Some more distributed stuff}
+\chapter{Topics in distributed systems}
 
 \section{Bookwork}
 
