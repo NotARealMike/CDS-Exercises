@@ -589,124 +589,151 @@ Lastly, enjoy learning through these questions!
 
 \section{Bookwork}
 
-\question{Lecture 9 concepts}{
+\question{Introduction to distributed systems}{Let's talk about
+  distributed systems from an informal perspective. Some topics to
+  cover:
   \begin{itemize}
-  \item What is a distributed system? Name a few and say what they
-    (try to) accomplish.
-  \item Why is a distributed system inherently a concurrent system?
-    What additional difficulties are there? Why would we want one in
-    the first place, if it is even more complex than a concurrent
-    system?
-  \item What protocols do you implicitly use when accessing this
-    exercise sheet? You don't have to be exhaustive, but I want to see
-    you thinking about this. What important conclusion can you draw
-    from this exercise?
-  \item What is transparency? Why is it useful? How much do we
-    actually want?
-  \item How would you describe a client-server application to your
-    Engling friend?
-  \item What are synchronous and asynchronous requests? What is an
-    appropriate use of each?
-  \item What are examples of errors, faults and failures?
-  \item What are retry; exactly-once; all-or-nothing; at-most-once and
-    at-least-once semantics?
-  \item What is RPC? Why is it a more useful abstraction than
-    request/response? What does ``useful'' even mean here?
-  \item What is marshalling? What is an IDL? How is all this done in
-    Java? (Hint: this is covered in the Further Java course.)
+  \item Intuitively, what is a distributed system? Why are some
+    applications distributed? What are some examples?
+    % Refer to slide 6
+  \item You will learn a lot about TCP/IP, DNS, HTTP and network
+    latency and throughput in the Networks course in Lent term. For
+    now, let's just make sure you know the basics needed to understand
+    communication between processes.
+    % Reliable in-order delivery, naming are the most important here
+  \item RPC is a very powerful and widely used framework. It is not
+    very relevant at the level of abstraction usually kept in this
+    course, but you will likely encounter it in many software
+    engineering roles. Let's discuss this briefly. Do you see the
+    similarity with active objects, from the concurrent part of the
+    course? What are the key differences?
+    % Talk about marshalling and Java's serialisable, proto buffers,
+    % JSON, and compatibility between languages
+  \item Distributed systems are extremely complex, and there are a lot
+    of problems to solve in the area. Let's briefly talk about the
+    specific problems addressed in this course.
+    % Ordering of events (using clocks), ordered broadcast over
+    % point-to-point links, consensus, replication for fault
+    % tolerance, availability and consistency (briefly 2-phase commit)
   \end{itemize}
 }
 
-\question{Lecture 10 concepts}{
+\question{Models of distributed systems}{Now that you have an
+  intuitive feel about distributed systems, let's discuss some ways in
+  which we can model them. Some topics to cover:
   \begin{itemize}
-  \item Make sure you brush up on the file system API in Unix. What
-    are the five procedures to handle a file exposed to a programmer?
-  \item How would you describe NFS to someone who just finished Part
-    IA of the Computer Science Tripos?
-  \item Why is a virtual file system a useful layer of abstraction to
-    use in NFS?
-  \item What does ``stateless'' mean in the context of NFS? Why would
-    a stateful design make fault recovery more difficult?
-  \item In 60 seconds or less, what are the implications of
-    statelessness on the interface between the NFS client and server?
-  \item The \texttt{readdirplus} procedure in NFSv3 is a good use of
-    batching. Why is it useful? Can you think of a situation where
-    batching would be undesirable?
-  \item What is inconsistency in the context of NFS? What feature of
-    NFSv3 causes it? How can programmers work around it? At what
-    granularity does this work?
+  \item How would you describe the two generals problem to your
+    Engling friend? This is an application of what general problem in
+    distributed systems? Can you think of another application?
+    % Both students should attempt this; consensus; the example in the
+    % slides is acceptable
+  \item What assumption made in the two generals problem is no longer
+    true in the Byzantine generals problem? Can you think of a
+    real-world application of this problem?
+    % Blockchain: processes have an incentive to lie, to make more
+    % money; mention crypto as a possible solution
+  \item What are the three types of behaviour we have to model in a
+    distributed system? What are the most common models of each type,
+    and what are their properties? Which can we assume in the
+    real-world?
+    % Network: reliable, fair-loss, arbitrary/adversary links
+    % Node: crash-stop, crash-recovery, byzantine
+    % Timing: synchronous, partially synchronous, asynchronous
+  \item We will talk more about availability later, when we talk about
+    consistency, but feel free to ask any questions you have now.
+  \item What are faults and failures? Why is the difference important?
+    How do we detect them in practice?
+    % Fault is single node/link, failure is system wide; timeouts
   \end{itemize}
 }
 
-\question{Lecture 11 concepts}{
+\question{Time, clocks and ordering}{In the concurrency part of the
+  course, we saw that being able to order events is quite a neat
+  ability. For example, when we attempt to serialise transactions,
+  it's useful to be able to say that one transaction is serialised
+  \emph{before} another. As it turns out, ordering is much more
+  difficult in a distributed system.
   \begin{itemize}
-  \item Object-Oriented Middleware is no longer part of the course,
-    but it is important to have a high-level understanding of it if
-    you ever write a distributed application in an OO language. How is
-    OOM different from RPC?
-  \item REST is also barely covered, but very widely used in industry,
-    so you should know what it is at a high-level. In 30 seconds or
-    less, explain to me what a RESTful service is.
-  \item Why do we care so much about knowing the time? How are
-    physical and logical time different?
-  \item What is UTC, and how is it calculated? How is it different
-    from Unix time?
-  \item What clocks does a typical laptop have? How is each clock
-    used?
-  \item What is the clock synchronisation problem? Why is it a
-    problem? What solutions are there?
-  \item On a whiteboard, draw and explain Cristian's algorithm. What
-    assumptions does it make? Are they fair assumptions to make?
-  \item What is the goal of the Berkeley algorithm? How does it
-    achieve that goal?
-  \item On a whiteboard, draw and explain the communication between a
-    client and a server in the NTP algorithm. How is this an
-    improvement on Cristian's algorithm? How else is NTP more complex
-    than Cristian's algorithm?
-  \item Why can physical time not be used in a distributed system?
-  \item How would you explain a happens-before relation to someone who
-    just finished Part IA of the Computer Science Tripos?
+  \item Read the first two pages of Lamport's paper on time
+    \cite{lamport1978time}. Why must orderings in a distributed system
+    be only partial orders?
+  \item What kinds of physical clocks are there? What is each used
+    for? What are the shortcomings of each?
+    % Quartz clocks (50ppm), atomic (1E-14), mention GPS
+  \item What representations of physical time are there? How is each
+    of them useful?
+    % UTC is International atomic time (TAI) + corrections for Earth's
+    % rotation (leap seconds); Unix time (seconds since epoch); ISO
+    % 8601 date+time
+  \item What is the purpose of NTP? How does it achieve this goal? In
+    words, how does an NTP client estimate clock skew from an NTP
+    server? What assumptions are made here? Are they fair assumptions
+    to make?
+    % Clock synchronisation; Stratum 0 is clock, 1 is server with
+    % clock; slew if <125ms, else step if <1000s, else panic
+  \item Why might it be useful to order messages in a distributed
+    system? Can you think of a real-world example that does not
+    involve discourse about cheese?
+    % Distributed transaction system; node receives "update object X"
+    % before it receives "create object X" from another node.
+  \item How is a happens-before relationship on the events in a
+    distributed system defined?
+    % Local execution, message delivery, transitive closure
   \end{itemize}
 }
 
-\question{Lecture 12 concepts}{
+\question{Broadcast protocols and logical time}{Now that we've seen
+  how impractical physical time is in a distributed system, let's
+  focus on logical time. A word of advice: whenever you start thinking
+  about a logical clock, make sure you know what the clock is
+  ordering. Is it ordering messages? Events? Transactions? Forgetting
+  to state this explicitly will lead to misunderstandings and bugs
+  that are difficult to pin down!
+  % Mention this!
   \begin{itemize}
-  \item What ``rules'' are used to define the happens-before
-    relationship shown on the slides?
-  \item By drawing a diagram on a whiteboard, explain how Lamport
-    clocks work. Given the timestamps of two events \textbf{L(a)} and
-    \textbf{L(b)}, what can we say about the order of \textbf{a} and
-    \textbf{b}?
-  \item By changing the diagram above, explain how vector clocks
-    work. How can vector clocks be used for ordering? Can you think of
-    a situation in which $\mathbf{V_i = V_j}$?
-  \item What are the tradeoffs between Lamport clocks and vector
+  \item In 60 seconds, explain Lamport clocks. You may want to
+    mention:
+    \begin{itemize}
+    \item What is being ordered?
+      % Local events
+    \item What are the steps in the algorithm?
+      % Increment on event; on receive max then increment
+      % Mention similarity with the rules for building a hb relation
+    \item How do Lamport clocks relate to a causal happens-before
+      relationship?
+      % a -> b implies L(a) < L(b), but not the opposite
+    \item What does it mean for two events to have the same timestamp?
+      % Either the same event, or completely unrelated at different
+      % nodes
+    \item How can a total order be formed from Lamport timestamps?
+      % Make timestamps out of (L timestamp, node id)
+    \end{itemize}
+  \item As above, but now for vector clocks.
+  \item In 30 seconds, explain the isomorphism between vector clocks
+    and sets of events.
+  \item What are the trade-offs between Lamport clocks and vector
     clocks? How does each of them scale with the number of processes
-    and the amount of communication?
-  \item What is a consistent cut? (As a point of discussion, is there
-    an error in the definition in the slides?)
-  \item How would you explain process groups to your supervision
-    partner(s)? In what ways can process groups vary?
+    and the amount of communication? How does each of them handle
+    dynamic process groups?
+    % Mention size, expressiveness, different types of orders
+  \item What are broadcast protocols, and why are they useful?
   \item What is the difference between ``receiving'' and
-    ``delivering'' a message? Why is this distinction useful?
-  \item What are the guarantees provided by FIFO, causal and total
-    ordering? How would you implement each? (Is the ``hold-back
-    queue'' actually a queue?)
+    ``delivering'' a message? At which layer does each of them happen?
+    Why is this distinction useful?
+  \item Let's have a free-form discussion about ordering of broadcast
+    messages. Please come prepared to explain each of the ordering
+    schemes presented in the course, why they might be useful, and how
+    they can be implemented.
+    % FIFO: reliable link (retransmit + dedup) + pairwise seq number
+    % Causal: essentially vector clocks
+    % Total order: leader dictates order OR Lamport timestamps but
+    % need to wait for a timestamp > T from each node before
+    % delivering message with timestamp T
+    % FIFO total order: FIFO + total order
+  \item Why is FIFO-total order broadcast strictly stronger than
+    causal broadcast?
   \end{itemize}
 }
-
-\question{A note on logical clocks}{Logical clocks are used to
-  attribute timestamps to events so that some ordering can be
-  determined. When using clocks, it's important to keep in mind what
-  events are being ``numbered''. When clocks are introduced in the
-  lecture slides, the clocks are incremented when a message is sent,
-  received, or when an internal event occurs. In other contexts, such
-  as the implementation of causal ordering of multicast messages in a
-  process group (and the chat application in the Further Java course),
-  the events being tracked are only message ``send''s. When
-  implementing an application using a logical clock, make sure you
-  know what you are counting, otherwise you will have bugs that are
-  very difficult to pin down!}
 
 \section{Exercises}
 
@@ -718,12 +745,20 @@ Lastly, enjoy learning through these questions!
   clocks}{\href{https://www.cl.cam.ac.uk/teaching/exams/pastpapers/y2005p9q4.pdf}{2005
     Paper 9 Question 4}}
 
-\question{Consistency}{\href{https://www.cl.cam.ac.uk/teaching/exams/pastpapers/y2004p8q4.pdf}{2004
-    Paper 8 Question 4}}
 
 \section{Extensions}
 
-\todo{Lamport's relativity argument, gRPC}
+\question{GRPC}{If you end up writing parts of a distributed system,
+  there's a good chance that you'll have to use GRPC or a similar
+  framework. Feel free to do some research on it and discuss in
+  supervision.}
+
+\question{Catchup}{In the last supervision we will be covering
+  consensus and distributed consistency, which are both very complex
+  problems. Now is a good time for you to ask any questions you have
+  on the course so far, as we are less likely to have time for them in
+  the final supervision.}
+
 
 \chapter{Topics in distributed systems}
 
@@ -831,6 +866,9 @@ Lastly, enjoy learning through these questions!
 }
 
 \section{Exercises}
+
+% \question{Consistency}{\href{https://www.cl.cam.ac.uk/teaching/exams/pastpapers/y2004p8q4.pdf}{2004
+% Paper 8 Question 4}}
 
 \question{Process
   naming}{\href{https://www.cl.cam.ac.uk/teaching/exams/pastpapers/y1998p12q1.pdf}{1998
