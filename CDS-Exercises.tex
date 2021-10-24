@@ -730,6 +730,11 @@ Lastly, enjoy learning through these questions!
     % need to wait for a timestamp > T from each node before
     % delivering message with timestamp T
     % FIFO total order: FIFO + total order
+    %
+    % For causal ordering, mention that the algorithm is slightly
+    % different depending on whether the timestamp entry of the
+    % sending node is incremented before or after a message is
+    % broadcast.
   \item Why is FIFO-total order broadcast strictly stronger than
     causal broadcast?
   \end{itemize}
@@ -764,127 +769,183 @@ Lastly, enjoy learning through these questions!
 
 \section{Bookwork}
 
-\question{Lecture 13 concepts}{
-  \begin{itemize}
-  \item What is a central lock server? What problem does it solve?
-    What are its pros and cons? Can you think of a way of implementing
-    a time-out that is different from the one in the slides? How does
-    it compare?
-  \item How does token passing work in a ring? What are its pros and
-    cons for implementing distributed locking? How many tokens are
-    there? (This last part is ambiguous by design. How could you use
-    more than one token?)
-  \item How does total-order multicast work? Why do we need a total
-    order on all messages? How can you achieve this with a Lamport
-    timestamp? What are the consequences of such an approach?
-  \item How would you describe the difficulties of distributed
-    transactions to someone that just finished the ``concurrency''
-    part of this course?
-  \item What problem does two-phase commit solve? Why does the
-    coordinator default to abort when one of the servers times out?
-  \item What is replication? What are passive and active replication?
-    What properties does each give a distributed application? What are
-    cold-, warm- and hot-standby?
-  \item What is RAID? What properties do RAID 0, 1 and 5 give us?
-  \item In 60 seconds, explain to your supervisions partner(s) the
-    concepts of strong and weak consistency, and tell me something I
-    don't know about consistency in a distributed system.
-  \end{itemize}
-}
+In the last four lectures there are a lot of relatively isolated
+topics, and we won't have time to cover them all in the
+supervision. Instead of trying to go through all of them sequentially,
+we will:
+\begin{itemize}
+\item Briefly discuss the motivations of replication;
+\item You will have time to ask any questions you have about the
+  course;
+\item You will each choose two topics from the last four lectures and
+  explain them in depth in the supervision, in the style of a short
+  presentation.
+\end{itemize}
 
-\question{Lecture 14 concepts}{
-  \begin{itemize}
-  \item What is a ``leader'' in a distributed system? Why is a leader
-    useful? How would you describe a generic leader election algorithm
-    to someone who just finished Part IA of the Computer Science
-    Tripos?
-  \item Why is ``highest ID'' a commonly used heuristic in leader
-    election? How is the process with the highest ID found in a
-    ring-based election and in the bully algorithm? (Be ready to draw
-    a diagram in the supervision.)
-  \item What is a network partition? Can it lead to more complicated
-    problems than single-machine failures? Why?
-  \item \todo{UPDATE ME!!!}
-  \end{itemize}
-}
+Instructions for the topic presentations:
+\begin{itemize}
+\item Agree with your partner beforehand which topics each of you is
+  presenting, so there is no overlap.
+\item Aim to talk for about 5 minutes per topic, and allow for 1-2
+  minutes of questions/discussion.
+\item Prepare what you're going to say in advance. You may find it
+  useful to have some written notes in front of you in the
+  supervision.
+\item Do some reading outside of the course for each of your
+  topics. One paper or textbook chapter per topic is sufficient. The
+  recommended textbooks and references section of the lecture notes
+  are a good place to start.
+\item You may want to choose one topic you're comfortable with, to
+  focus on your presentation/technical discussion skills. These often
+  transfer into the ability to write clear Tripos answers.
+\item You may want to choose one topic you are struggling with, to
+  give you the chance to become more familiar with it when preparing
+  your presentation.
+\end{itemize}
 
-\question{Lecture 15 concepts}{
+
+\question{Replication}{
   \begin{itemize}
-  \item What are the pros and cons of the first algorithm to achieve
-    consistency shown in the slides? It is a particular instance of
-    which algorithm?
-  \item What is a ``quorum''? How can a quorum system be used to
-    implement strong consistency? Why do we need the constraint that
-    the write quorum must be larger then half the number of replicas?
-  \item How can we change a quorum system to provide ``weak
-    consistency''? What properties are provided by strong consistency
-    but not in this case?
-  \item What is eventual consistency? How does it compare with strong
-    and weak consistency? How can it be implemented? What are write
-    conflicts?
-  \item What are session guarantees, and what properties can they be
-    used to provide? What are their drawbacks, and how can we mitigate
-    them?
-  \item What is the CAP theorem? How big are its implications to
-    real-world distributed systems? (You may want to skim the Spanner
-    article in the extensions section.)
-  \item What is MapReduce? Why is it such a successful framework?
-    (This is deliberately vague, let's discuss in supervision.)
-  \item Pick one of the applications case studies in the slides and
-    explain it to me. You can assume I know nothing about the
-    application in particular, but I do know a fair amount about
-    distributed systems. Exercise your ability to talk about computer
-    systems, and feel free to include some information not in the
-    course. You may want to cover, for example:
+  \item What is data replication? Why do we want it?
+    % Data replication for fault tolerance
+    % Mention RAID and sharding as context for different ways to
+    % replicate data
+    % Mention probability of single fault vs total failure
+    % Mention computation replication
+  \item Explain the complexity introduced by retrying state updates in
+    a distributed system. You should cover:
     \begin{itemize}
-    \item What problem is the application trying to solve?
-    \item What components does it have?
-    \item What key algorithms --- covered in this course or otherwise
-      --- are used?
-    \item What interesting properties does the application have?
+    \item Why do retries exist in the first place?
+      % Message loss, which is indistinguishable from ACK loss.
+    \item Given that retries are necessary, what types of retry
+      behaviour (semantics) can an application implement?\\
+      You should state these as \emph{If a client sends a request,
+        then the server will \textbf{deliver} that request $X$ times.}
+      % At-most-once, at-least-once, exactly-once.
+    \item What is idempotence? Why is it useful?
+      % Makes it ok to deliver the same message several times in a
+      % row.
+    \item Can idempotence be implemented using message deduplication?
+      This is an open-ended question; be ready to defend your
+      argument.
+      % Yes: dedup between receive and deliver means idempotence at
+      % the receive level
+      % No: dedup means messages are only delivered once, so
+      % idempotence doesn't matter
     \end{itemize}
+  \item Are exactly-once semantics ``enough'' in the presence of
+    multiple clients or servers? Why?
+    % Talk about different ways that operations can be reordered and
+    % interleaved. Too long to discuss in depth. Ask if they
+    % understand how timestamps and tombstones are used,
+    % reconciliation, concurrent writes.
   \end{itemize}
 }
 
-\question{Lecture 16 concepts}{
-  \begin{itemize}
-  \item What are administrative domains? Why do they make it necessary
-    to implement distributed security protocols? What is a trusted
-    computing base?
-  \item What are identification, authentication and authorisation?
-  \item What is an access control matrix? Why don't we use one
-    directly? What are ACLs and capabilities? What are the pros and
-    cons of each?
-  \item What is role-based access control? Describe an example
-    application that uses RBAC.
-  \item How would you describe single-system sign on to someone who
-    just finished Part IA of the Computer Science Tripos?
-  \item Pick one of AFS or Coda and explain it to me in 60 seconds or
-    less. Use the same rules as for the case study question from
-    Lecture 15.
-  \end{itemize}
+% Ensure that the Kidz understand state machine replication using
+% total order broadcast.
+
+\question{Presentation topics}{As described above, choose two of the
+  following:
+  \begin{description}
+  \item[Quorums] In particular, explain:
+    \begin{itemize}
+    \item The requirements of a quorum system, and why they are
+      important;
+    \item The performance tradeoffs of different choices of read and
+      write quorum size;
+    \item Different methods of achieving consistency, such as read
+      repair.
+      % Anti-entropy algorithms that periodically share latest
+      % versions
+    \end{itemize}
+  \item[Consensus in general] I do not want you to explain Raft here,
+    you're already doing that in one of the written exercises!
+    Instead, I want you to focus on some of the following:
+    \begin{itemize}
+    \item How modern implementations of consensus algorithms differ
+      from the traditional formulation of the problem;
+      % Single value is easy to formalise
+      % Multi-value is useful for FIFO-total order broadcast; they are
+      % formally equivalent
+    \item The PLF result;
+    \item The motivations behind the creation of Raft, and how it
+      differs from Paxos.
+    \end{itemize}
+  \item[Two-phase commit] Including:
+    \begin{itemize}
+    \item A comparison with consensus;
+    \item A discussion of fault tolerance.
+      % Algorithm on slides.
+    \end{itemize}
+  \item[Linearisability] Including how it relates to happens-before
+    and to physical time.
+  \item[The CAP theorem] In particular, explain:
+    \begin{itemize}
+    \item What each of the properties is, and how the meaning of
+      consistency differs between contexts;
+    \item Different possible consistency guarantees;
+    \item The real-world implications of the CAP theorem;
+    \item At least one of BASE and PACELC.
+    \end{itemize}
+  \item[Others] Any of the following, with the caveat that they are
+    likely not examinable:
+    \begin{itemize}
+    \item CRDTs;
+    \item A case study of any distributed system, like the one of
+      Spanner in the slides. You may select Spanner or any other
+      system that is relevant to the course.
+    \end{itemize}
+  \end{description}
 }
 
 \section{Exercises}
 
+\question{Third topic}{Select one of the presentation topics from the
+  bookwork section and explain it. This topic must not be one of the
+  two you picked for the verbal presentation in supervision, but it
+  can overlap with your supervision partner's.
+  \\
+  Do this exercise as if you were answering a 10 mark Tripos question
+  part. The purpose of this exercise is for you to practice
+  structuring medium-length Tripos answers, and in particular to
+  select the most relevant information to include in your answer.  }
+
+\question{Raft}{Explain in detail the purpose and operation of the
+  Raft algorithm.
+  \\
+  Do this exercise as if you were answering a 20 mark Tripos
+  question. The purpose of this exercise is for you to practice
+  structuring long Tripos answers, writing clearly and concisely, and
+  ensuring that even long answers are understandable.  You are not
+  expected to remember all the details of Raft in a Tripos exam, so
+  you should answer this question open-book.
+  \\
+  You may also find the
+  \href{http://thesecretlivesofdata.com/raft/}{visualisation} of Raft
+  useful as a source of inspiration.  }
+
 % \question{Consistency}{\href{https://www.cl.cam.ac.uk/teaching/exams/pastpapers/y2004p8q4.pdf}{2004
 % Paper 8 Question 4}}
 
-\question{Process
-  naming}{\href{https://www.cl.cam.ac.uk/teaching/exams/pastpapers/y1998p12q1.pdf}{1998
-    Paper 12 Question 1}}
+% \question{Process
+% naming}{\href{https://www.cl.cam.ac.uk/teaching/exams/pastpapers/y1998p12q1.pdf}{1998
+% Paper 12 Question 1}}
 
-\question{RPC and
-  ORB}{\href{https://www.cl.cam.ac.uk/teaching/exams/pastpapers/y1999p9q1.pdf}{1999
-    Paper 9 Question 1}}
+% \question{RPC and
+% ORB}{\href{https://www.cl.cam.ac.uk/teaching/exams/pastpapers/y1999p9q1.pdf}{1999
+% Paper 9 Question 1}}
 
-\question{Access
-  control}{\href{https://www.cl.cam.ac.uk/teaching/exams/pastpapers/y2000p8q1.pdf}{2000
-    Paper 8 Question 1}}
+% \question{Access
+% control}{\href{https://www.cl.cam.ac.uk/teaching/exams/pastpapers/y2000p8q1.pdf}{2000
+% Paper 8 Question 1}}
 
 \section{Extensions}
 
-\todo{Consensus (Paxos and/or Raft), Spanner and the CAP theorem.}
+As mentioned in the bookwork section, the last four lectures of the
+course cover a variety of topics, but each of them only briefly. If
+you are interested, you can easily learn more about each of them, and
+incorporate more of your findings in your topic presentations!
 
 \bibliographystyle{apalike}
 
