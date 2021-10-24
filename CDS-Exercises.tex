@@ -303,39 +303,49 @@ Lastly, enjoy learning through these questions!
 
 \section{Bookwork}
 
+%% Ask this one
 \question{The free lunch is over}{Before trying to solve all the
   problems of concurrent programming, it's important to understand why
   concurrency is desirable in the first place. Read
-  \cite{FreeLunchIsOver}. We will discuss in the supervision.}
+  \cite{FreeLunchIsOver}.}
 
-\question{Lecture 1 concepts}{Define and explain the following:
+\question{Concurrency concepts}{
   \begin{itemize}
-  \item Multicore processors;
-  \item Processes, threads and the differences between them (you may
-    want to mention the memory stacks and heap), as well as how
-    context switches work;
-  \item Concurrency, and the difference between time sharing a single
-    core and true parallelism;
-  \item User-level, kernel-level and hybrid thread scheduling, the
-    advantages and disadvantages of each as well as your favourite
-    language that uses each of them;
-  \item ``Mostly correct'' code and why it is a problem;
-  \item Critical sections and mutual exclusion;
-  \item Race conditions and atomic memory operations.
+  \item Define and explain the following:
+    \begin{itemize}
+    \item Concurrency, and the difference between time sharing a single
+      core and true parallelism;
+    \item ``Mostly correct'' code and why it is a problem;
+      %% Ask all from here as quickfire
+    \item Safety and progress;
+    \item Race conditions and mutual exclusion;
+    \item Atomic memory operations, critical sections and locks;
+    \item Deadlock and livelock.
+    \end{itemize}
+  \item It is safe for multiple threads to concurrently read a shared
+    resource, but writes must have exclusive access. Why?  What can go
+    wrong if a read and a write happen concurrently?  What can happen
+    if two writes happen concurrently?
+  \item Be prepared to act out the dining philosophers' problem in the
+    supervision and explain where the problem lies. Can you think of a
+    simple solution?
   \end{itemize}
 }
 
-\question{Lecture 2 concepts}{
+\question{Hardware}{
   \begin{itemize}
-  \item In a multicore system, would it be possible to achieve mutual
-    exclusion on critical sections by locking (having exclusive access
-    to) the memory bus when entering a critical section? You may find
-    it useful to refer to the slide titled ``Computer Architecture
-    Reference Models''.
+  \item Describe the following:
+    \begin{itemize}
+    \item Multicore processors;
+    \item Processes, threads and the differences between them (you may
+    want to mention the memory stacks and heap), as well as how
+    context switches work;
+    \item User-level, kernel-level and hybrid thread scheduling, the
+    advantages and disadvantages of each as well as your favourite
+    language that uses each of them.
+    \end{itemize}
+    %% Ask to `End` as quickfire
   \item What can cause a running process/thread to block?
-  \item What are the problems with disabling interrupts to provide
-    atomic execution of a critical section? Don't forget the ones that
-    do not involve other cores or DMA.
   \item Why do we need special ISA instructions to make an atomic
     read-and-set? Are these instructions strictly necessary to write
     correct concurrent programs? You may want to mention Lamport's
@@ -344,45 +354,41 @@ Lastly, enjoy learning through these questions!
     of the Computer Science Tripos?
   \item How would you explain LL/SC to someone who just finished Part
     IA of the Computer Science Tripos?
-  \item What is the difference between deadlock and livelock?
-  \item Be prepared to act out the dining philosophers' problem in the
-    supervision and explain where the problem lies. Can you think of a
-    simple solution?
+  \item Is it better for a lock to spin or sleep? Why?
+    %% End
+  \item In a multicore system, would it be possible to achieve mutual
+    exclusion on critical sections by locking (having exclusive access
+    to) the memory bus when entering a critical section? You may find
+    it useful to refer to the slide titled ``Computer Architecture
+    Reference Models''.
+  \item What are the problems with disabling interrupts to provide
+    atomic execution of a critical section? Don't forget the ones that
+    do not involve other cores or DMA.
+  \item What concurrency primitives do C++ pthreads support?
   \end{itemize}
 }
 
-\question{Lecture 3 concepts}{
+%% Ask one student to talk about semaphores for a couple of minutes
+\question{Semaphores}{
   \begin{itemize}
-  \item Why is sleeping preferable to spinning?
   \item Describe the implementation of a semaphore and its
     operations. Refer to
     \cite[Chapters~10.4--10.6]{bacon2003operating} for more in-depth
     information than the lecture slides.
-  \item What is an IPI? For this course you don't need to know much
-    about low-level implementation details, but you should be
-    comfortable explaining what they are and how they can be used at a
-    high level.
   \item How can a semaphore be used to provide mutual exclusion,
     condition synchronisation and resource allocation? What is the
     starting value of the semaphore and what are the logical meanings
     of the operations in each case?
-  \item Explain the producer-consumer problem. What are some
-    real-world applications of this problem? How can you solve it with
-    semaphores? How would you solve it with locks? You may wish to
-    refer to \cite[Chapter~11.3]{bacon2003operating}.
-  \end{itemize}
-}
-
-\question{Lecture 4 concepts}{
-  \begin{itemize}
-  \item It is safe for multiple threads to concurrently read a shared
-    resource, but writes must have exclusive access. Why?  What can go
-    wrong if a read and a write happen concurrently?  What can happen
-    if two writes happen concurrently?
   \item Be ready to sketch out and discuss several RW lock
     implementations using semaphores in the supervision, focusing on
     their starvation and fairness properties. This should include the
     implementation in \cite[Chapter~11.5]{bacon2003operating}.
+  \end{itemize}
+}
+
+%% Ask the other student to talk about monitors
+\question{Monitors}{
+  \begin{itemize}
   \item What are the advantages of Conditional Critical Regions, and
     why do we care about them? Why is CCR not a common synchronisation
     mechanism?
@@ -395,13 +401,20 @@ Lastly, enjoy learning through these questions!
   \item What are the pros and cons of signal-and-wait and
     signal-and-continue semantics? Which is used in Java? What
     implications does this have on how we \texttt{wait} in Java?
-  \item How would you implement a RW lock using a monitor? (Hint:
-    adapt the implementation using semaphores in
-    \cite[Chapter~11.5]{bacon2003operating}.)
-  \item What concurrency primitives do C++ pthreads support?
   \end{itemize}
 }
 
+\question{Common problems}{
+  \begin{itemize}
+  \item Explain the producer-consumer problem. What are some
+    real-world applications of this problem? How can you solve it with
+    each one of locks, semaphores and monitors? You may wish to
+    refer to \cite[Chapter~11.3]{bacon2003operating}.
+  \item How would you implement a RW lock using a monitor? (Hint:
+    adapt the implementation using semaphores in
+    \cite[Chapter~11.5]{bacon2003operating}.)
+  \end{itemize}
+}
 
 \section{Exercises}
 
