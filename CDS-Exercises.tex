@@ -456,7 +456,7 @@ Lastly, enjoy learning through these questions!
 
 \section{Bookwork}
 
-\question{Lecture 5 concepts}{
+\question{Liveness properties}{
   \begin{itemize}
   \item This is repeated from last supervision, but it's worth making
     sure you remember: What is the difference between deadlock and
@@ -469,10 +469,10 @@ Lastly, enjoy learning through these questions!
     we will discuss in supervision.
   \item One way to prevent hold-and-wait is to request all resources
     simultaneously. Why can this be a hard thing to do?
+  \item Run through Banker's algorithm. What does it achieve?
   \item Again, this is a repeat from last supervision, but now you
     should make sure you can do it: What is a simple solution to the
     dining philosophers problem?
-  \item \todo{Banker's algorithm?}
   \item What are some pros and cons of the thread scheduling policies
     on the slides?
   \item Sketch out an example scenario of priority inversion without
@@ -480,7 +480,7 @@ Lastly, enjoy learning through these questions!
   \end{itemize}
 }
 
-\question{Lecture 6 concepts}{
+\question{Transactions}{
   \begin{itemize}
   \item Why are higher-level concurrent programming models useful?
     What higher-level models are there, and what are some examples
@@ -501,7 +501,7 @@ Lastly, enjoy learning through these questions!
   \end{itemize}
 }
 
-\question{Lecture 7 concepts}{
+\question{Isolation and transactional systems}{
   \begin{itemize}
   \item What kinds of operation conflicts are there? What are the
     problems caused by each?
@@ -521,17 +521,15 @@ Lastly, enjoy learning through these questions!
     \cite[Chapter~20.6]{bacon2003operating} for this one, because the
     slides are somewhat misleading. What are its advantages and
     disadvantages?
-  \item Explain the OCC algorithm used in the slides. What's wrong
-    with the ``OCC example (2)'' slide? As in, how is it being overly
-    conservative? (Hint: can a write-only transaction conflict with
-    any committed transaction?)
+  \item Explain the OCC algorithm used in the slides.
+    % Ask this one
   \item In an application with a high degree of contention --- many
     concurrent transactions conflict, forcing each other to abort ---
     what is the best synchronisation mechanism?
   \end{itemize}
 }
 
-\question{Lecture 8 concepts}{
+\question{Durability and advanced topics}{
   \begin{itemize}
   \item What is a crash? What can cause it? What assumptions does the
     fail-stop model make, and how can they be broken?
@@ -583,7 +581,7 @@ Lastly, enjoy learning through these questions!
   desirable than ACID?}
 
 \question{Lock-free programming}{The \emph{Multicore Semantics and
-    Programming} Part II Unit of Assessment has a two hour lecture on
+    Programming} Part II Unit of Assessment has a two-hour lecture on
   lock-free programming. If you want to know more, it's a good place
   to start.}
 
